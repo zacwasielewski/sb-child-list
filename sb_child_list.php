@@ -219,12 +219,9 @@ function sb_cl_render_cat_list($category, $limit=false, $order=false, $template_
 function sb_cl_get_cat_id_from_name($cat) {
         global $wpdb;
         
-        $sql = 'SELECT term_id
-                FROM ' . $wpdb->prefix . 'terms
-                WHERE
-                    name LIKE "' . mysql_real_escape_string($cat) . '"
-                    OR slug LIKE "' . mysql_real_escape_string($cat) . '"
-        ';
+        $sql = $wpdb->prepare('SELECT term_id
+                FROM {$wpdb->prefix}terms
+                WHERE name LIKE %s OR slug LIKE %s', $cat, $cat);
         $cat_id = $wpdb->get_var($sql);
 
 	if (isset($_GET['debug'])) {
